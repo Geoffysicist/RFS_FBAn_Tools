@@ -1,0 +1,6 @@
+# Core dependencies
+PyYAML>=6.0
+
+# Testing dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
