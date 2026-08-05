@@ -64,9 +64,11 @@ Examples:
     # Optional arguments
     parser.add_argument(
         "--update-mode",
-        choices=["skip", "update", "overwrite"],
+        choices=["skip", "update", "merge", "overwrite"],
         default="skip",
-        help="How to handle existing directories (default: skip)"
+        help="How to handle existing directories: skip (default: leave unchanged), "
+             "update (add template files, keep existing), merge (overwrite template files, keep others), "
+             "overwrite (completely replace)"
     )
     
     parser.add_argument(

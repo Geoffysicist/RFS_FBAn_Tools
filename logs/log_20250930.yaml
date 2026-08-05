@@ -1,0 +1,88 @@
+---
+function: setup_logging
+level: DEBUG
+line: 127
+logger: setup_directories_cli
+message: 'Logging to file: logs\log_20250930.yaml'
+module: logging_utils
+timestamp: '2025-09-30T12:19:08.006761'
+---
+function: setup_logging
+level: DEBUG
+line: 129
+logger: setup_directories_cli
+message: Logging setup completed
+module: logging_utils
+timestamp: '2025-09-30T12:19:08.006761'
+---
+function: main
+level: INFO
+line: 160
+logger: setup_directories_cli
+message: Starting directory setup script
+module: setup_directories
+timestamp: '2025-09-30T12:19:08.006761'
+---
+function: main
+level: DEBUG
+line: 161
+logger: setup_directories_cli
+message: 'Arguments: {''base_directory'': ''O:\\Operations\\2526Fires\\Fire Mapping'',
+  ''template_directory'': ''O:\\Operations\\2526Fires\\Fire Mapping\\00_Template_District_NAME'',
+  ''names_file'': ''C:\\Users\\geoffg\\Documents\\repos\\RFS_FBAn_Tools\\assets\\LGAs_test.txt'',
+  ''update_mode'': ''skip'', ''dry_run'': False, ''no_progress'': False, ''no_log_file'':
+  False, ''verbose'': False}'
+module: setup_directories
+timestamp: '2025-09-30T12:19:08.006761'
+---
+function: main
+level: INFO
+line: 209
+logger: setup_directories_cli
+message: Directory setup completed successfully
+module: setup_directories
+timestamp: '2025-09-30T12:19:28.455301'
+---
+function: setup_logging
+level: DEBUG
+line: 127
+logger: setup_directories_cli
+message: 'Logging to file: logs\log_20250930.yaml'
+module: logging_utils
+timestamp: '2025-09-30T12:20:02.729008'
+---
+function: setup_logging
+level: DEBUG
+line: 129
+logger: setup_directories_cli
+message: Logging setup completed
+module: logging_utils
+timestamp: '2025-09-30T12:20:02.729008'
+---
+function: main
+level: INFO
+line: 160
+logger: setup_directories_cli
+message: Starting directory setup script
+module: setup_directories
+timestamp: '2025-09-30T12:20:02.730008'
+---
+function: main
+level: DEBUG
+line: 161
+logger: setup_directories_cli
+message: 'Arguments: {''base_directory'': ''O:\\Operations\\2526Fires\\Fire Mapping'',
+  ''template_directory'': ''O:\\Operations\\2526Fires\\Fire Mapping\\00_Template_District_NAME'',
+  ''names_file'': ''C:\\Users\\geoffg\\Documents\\repos\\RFS_FBAn_Tools\\assets\\LGAs.txt'',
+  ''update_mode'': ''skip'', ''dry_run'': False, ''no_progress'': False, ''no_log_file'':
+  False, ''verbose'': False}'
+module: setup_directories
+timestamp: '2025-09-30T12:20:02.730008'
+---
+function: main
+level: INFO
+line: 209
+logger: setup_directories_cli
+message: Directory setup completed successfully
+module: setup_directories
+timestamp: '2025-09-30T12:25:52.952069'

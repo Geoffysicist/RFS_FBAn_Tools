@@ -295,6 +295,41 @@ class TestCreateDirectoriesFromTemplate:
         assert not (existing_dir / "existing_file.txt").exists()
         assert (existing_dir / "template_file.txt").read_text() == "template content"
     
+    def test_update_mode_merge(self, temp_dir: Path):
+        """Test merge mode overwrites template files but keeps other files."""
+        base_dir = temp_dir / "base"
+        template_dir = temp_dir / "template"
+        
+        # Create template with two files
+        template_dir.mkdir()
+        (template_dir / "template_file.txt").write_text("new template content")
+        (template_dir / "shared_file.txt").write_text("template shared content")
+        
+        # Create existing directory with overlapping and unique files
+        base_dir.mkdir()
+        existing_dir = base_dir / "LGA1"
+        existing_dir.mkdir()
+        (existing_dir / "template_file.txt").write_text("old template content")  # Will be overwritten
+        (existing_dir / "shared_file.txt").write_text("old shared content")     # Will be overwritten
+        (existing_dir / "unique_file.txt").write_text("unique content")         # Will be kept
+        
+        names = ["LGA1"]
+        
+        stats = create_directories_from_template(
+            base_directory=base_dir,
+            template_directory=template_dir,
+            directory_names=names,
+            update_mode="merge"
+        )
+        
+        assert stats['updated'] == 1
+        
+        # Verify template files were overwritten
+        assert (existing_dir / "template_file.txt").read_text() == "new template content"
+        assert (existing_dir / "shared_file.txt").read_text() == "template shared content"
+        # Verify unique files were preserved
+        assert (existing_dir / "unique_file.txt").read_text() == "unique content"
+    
     def test_dry_run_mode(self, temp_dir: Path):
         """Test dry run mode doesn't create actual directories."""
         base_dir = temp_dir / "base"

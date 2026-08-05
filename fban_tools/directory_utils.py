@@ -144,7 +144,7 @@ def create_directories_from_template(
         base_directory: Base directory where new directories will be created
         template_directory: Template directory to copy contents from
         directory_names: List of directory names, or path to file containing names
-        update_mode: How to handle existing directories ('skip', 'update', 'overwrite')
+        update_mode: How to handle existing directories ('skip', 'update', 'overwrite', 'merge')
         dry_run: If True, only show what would be done without actually doing it
         progress_callback: Optional callback function for progress updates
         
@@ -155,25 +155,32 @@ def create_directories_from_template(
         FileNotFoundError: If template directory or names file doesn't exist
         ValueError: If invalid update_mode specified
         
+    Update Modes:
+        - 'skip': Skip existing directories entirely, only create new ones
+        - 'update': Add new template files to existing dirs, preserve existing files
+        - 'merge': Overwrite files that exist in template, keep other existing files  
+        - 'overwrite': Completely replace existing directories with template contents
+        
     Example:
-        # From list of names
+        # Merge template files with existing directories (your use case)
         stats = create_directories_from_template(
             base_directory='/path/to/base',
             template_directory='/path/to/template',
             directory_names=['LGA1', 'LGA2', 'LGA3'],
-            update_mode='update'
+            update_mode='merge'  # Overwrites template files, keeps others
         )
         
-        # From file
+        # From file with update mode
         stats = create_directories_from_template(
             base_directory='/path/to/base',
             template_directory='/path/to/template',
             directory_names='lgas.txt',
+            update_mode='update',  # Only adds new files
             dry_run=True
         )
     """
     # Validate update mode
-    valid_modes = ['skip', 'update', 'overwrite']
+    valid_modes = ['skip', 'update', 'merge', 'overwrite']
     if update_mode not in valid_modes:
         raise ValueError(f"Invalid update_mode '{update_mode}'. Must be one of: {valid_modes}")
     
@@ -247,6 +254,19 @@ def create_directories_from_template(
                         copied, skipped = copy_directory_contents(
                             template_path, dir_path, 
                             overwrite=False, skip_existing=True
+                        )
+                        stats['updated'] += 1
+                        stats['total_files_copied'] += copied
+                        stats['total_files_skipped'] += skipped
+                elif update_mode == 'merge':
+                    if dry_run:
+                        logger.info(f"DRY RUN: Would merge template into directory: {name}")
+                        stats['updated'] += 1
+                    else:
+                        logger.info(f"Merging template into directory: {name}")
+                        copied, skipped = copy_directory_contents(
+                            template_path, dir_path,
+                            overwrite=True, skip_existing=False
                         )
                         stats['updated'] += 1
                         stats['total_files_copied'] += copied
