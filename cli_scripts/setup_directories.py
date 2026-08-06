@@ -1,13 +1,66 @@
 #!/usr/bin/env python3
 """CLI script for setting up directories from templates.
 
-This script creates directories for operational setups like fire seasons,
-copying template contents to each directory based on a list of names.
+This script creates multiple directories from a template directory, useful for
+operational setups like fire seasons, project structures, or any scenario where
+you need to replicate a directory structure for multiple items. It reads a list
+of names from a text file and creates a directory for each name, copying the
+template contents to each one.
 
-Example usage:
-    python setup_directories.py base_dir template_dir names.txt
-    python setup_directories.py base_dir template_dir names.txt --update-mode update
-    python setup_directories.py base_dir template_dir names.txt --dry-run
+Positional Arguments:
+    base_directory: The parent directory where all new directories will be created.
+                    Will be created automatically if it doesn't exist (unless --dry-run).
+    
+    template_directory: The directory to use as a template. All files and subdirectories
+                        from this directory will be copied to each new directory.
+    
+    names_file: Path to a text file containing directory names, one per line. Each
+                non-empty, non-comment line will result in a new directory being
+                created in the base_directory.
+
+Optional Arguments:
+    --update-mode {skip,update,merge,overwrite}: Controls behavior when a directory
+                    already exists. Default: skip
+        - skip: Leave existing directories completely unchanged
+        - update: Add files from template that don't exist, keep all existing files
+        - merge: Overwrite template files, keep non-template files
+        - overwrite: Completely replace the directory with fresh template contents
+    
+    --dry-run: Preview mode. Shows what would be done without making any actual changes.
+               Useful for testing before running the operation for real.
+    
+    --no-progress: Disable the progress display during directory creation. Useful when
+                   running in automated scripts or when you don't need visual feedback.
+    
+    --no-log-file: Disable logging to a file. By default, the script creates a timestamped
+                   log file in the logs/ directory. Use this option to only log to console.
+    
+    -v, --verbose: Enable verbose output, showing DEBUG level messages. Useful for
+                   troubleshooting issues or understanding what the script is doing.
+    
+    --version: Display the script version and exit.
+
+Example Usage:
+    # Basic setup - create directories from template
+    python setup_directories.py /path/to/base /path/to/template lgas.txt
+    
+    # Update existing directories with new template files
+    python setup_directories.py /path/to/base /path/to/template lgas.txt --update-mode update
+    
+    # Preview changes without executing
+    python setup_directories.py /path/to/base /path/to/template lgas.txt --dry-run
+    
+    # Merge template changes into existing directories
+    python setup_directories.py /path/to/base /path/to/template lgas.txt --update-mode merge
+    
+    # Verbose mode with no progress display
+    python setup_directories.py /path/to/base /path/to/template lgas.txt --verbose --no-progress
+    
+    # Fire season example (typical use case)
+    python setup_directories.py "O:/Operations/2425Fires/Fire Mapping" "O:/Templates/District_Template" LGAs.txt --update-mode update
+
+Returns:
+    Exit code 0 on success, 1 if any errors occurred during processing.
 """
 
 import argparse
